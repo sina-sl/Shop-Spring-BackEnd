@@ -1,0 +1,44 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://ep-fragrant-surf-a8by4736-pooler.eastus2.azure.neon.tech/neondb?sslmode=require
+    username: neondb_owner
+    password: npg_t8cw0aExkfqW
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+#    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: YOUR_GOOGLE_CLIENT_ID
+            client-secret: YOUR_GOOGLE_CLIENT_SECRET
+            scope:
+              - email
+              - profile
+        provider:
+          google:
+            token-uri: https://oauth2.googleapis.com/token
+            authorization-uri: https://accounts.google.com/o/oauth2/auth
+            user-info-uri: https://openidconnect.googleapis.com/v1/userinfo
+            user-name-attribute: sub
+
+payment:
+  callback-url: http://localhost:5173/verify-payment
+  providers:
+    zarinpal:
+      api-url: https://sandbox.zarinpal.com/pg
+      redirect-url: https://www.zarinpal.com/pg/StartPay
+      merchant-id: a1ddfaf1-36ae-43e1-8922-1c0d0fd44392
+      verify-url: ${payment.providers.zarinpal.api-url}/v4/payment/verify.json
+      request-url: ${payment.providers.zarinpal.api-url}/v4/payment/request.json
+
+server:
+  port: 8080 
