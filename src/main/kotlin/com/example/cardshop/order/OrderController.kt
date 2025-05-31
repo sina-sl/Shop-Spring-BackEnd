@@ -30,7 +30,7 @@ class OrderController(
     fun searchUserOrders(
         @AuthenticationPrincipal principal: CustomUserDetails,
         @RequestParam(required = false) status: OrderStatus?,
-        @RequestParam(required = false) search: String?,
+        @RequestParam(required = false, defaultValue = "") search: String?,
         @PageableDefault(size = 10, sort = ["createdAt"], direction = Sort.Direction.DESC) pageable: Pageable
     ): ResponseEntity<Page<Order>> {
         val orders = orderService.searchUserOrders(

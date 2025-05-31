@@ -72,10 +72,11 @@ data class ZarinpalPaymentVerificationResponse(
 
 @Component
 class ZarinpalService(
+    @Value("\${payment.providers.zarinpal.url}") private val baseUrl: String,
     @Value("\${payment.providers.zarinpal.verify-url}") private val verifyUrl: String,
     @Value("\${payment.providers.zarinpal.merchant-id}") private val merchantId: String,
     @Value("\${payment.providers.zarinpal.request-url}") private val requestUrl: String,
-    @Value("\${payment.providers.zarinpal.redirect-url}") private val redirectUrl: String
+    @Value("\${payment.providers.zarinpal.payment-url}") private val paymentUrl: String,
 ): PaymentMethodsService {
     private val restTemplate = RestTemplate()
 
@@ -97,7 +98,7 @@ class ZarinpalService(
 
         return object : CreatePaymentResponse {
             override val authority: String = response.data.authority
-            override val paymentUrl: String = "$redirectUrl/$authority"
+            override val paymentUrl: String = "${this@ZarinpalService.paymentUrl}/$authority"
         }
     }
 

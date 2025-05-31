@@ -11,7 +11,21 @@ import java.util.*
 
 interface CardRepository : JpaRepository<Card, Long> {
 
-    fun findByIdAndIsActiveTrue(id: Long): Optional<Card>
+    fun findByIdAndIsActiveTrue(@Param("id") id: Long): Optional<Card>
+
+
+    @Query(
+        """
+            SELECT new com.example.cardshop.card.dto.CardWithStockCountDto(
+                c.id, c.title, c.price, c.imageUrl, c.description, c.pricingType, c.deliveryType, COUNT(s.id)
+            )
+            FROM Card c
+            LEFT JOIN c.stockItems s ON s.sold = false AND s.order IS NULL
+            WHERE c.id = :id AND c.isActive = true
+            GROUP BY c.id, c.title, c.price, c.imageUrl, c.description, c.pricingType, c.deliveryType
+        """
+    )
+    fun findByIdAndIsActiveTrueWithAvailableStock(@Param("id") id: Long): Optional<CardWithStockCountDto>
 
     @Query(
         """

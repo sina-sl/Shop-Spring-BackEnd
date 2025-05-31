@@ -40,6 +40,7 @@ class AdminService(
                 title = creationData.title,
                 price = creationData.price,
                 imageUrl = creationData.imageUrl,
+                isActive = creationData.isActive,
                 pricingType = creationData.pricingType,
                 description = creationData.description,
                 deliveryType = creationData.deliveryType,
@@ -87,6 +88,7 @@ data class CardCreationData(
     val price: Int,
     val code: String,
     val imageUrl: String,
+    val isActive: Boolean,
     val pricingType: PricingType,
     val deliveryType: DeliveryType
 )

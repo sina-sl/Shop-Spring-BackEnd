@@ -20,8 +20,8 @@ class CardController(
 
 
     @GetMapping("/{id}")
-    fun getActiveCard(@PathVariable id: Long): ResponseEntity<Card> {
-        val card = cardService.getActiveCardById(id)
+    fun getActiveCard(@PathVariable id: Long): ResponseEntity<CardWithStockCountDto> {
+        val card = cardService.getActiveCardWithAvailableStockById(id)
         return if (card.isPresent) {
             ResponseEntity.ok(card.get())
         } else {

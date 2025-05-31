@@ -16,6 +16,8 @@ data class Payment(
 
     val refId: String? = null,
     val authority: String,
+
+    @Enumerated(EnumType.STRING)
     val status: PaymentStatus = PaymentStatus.PENDING,
 
     @Enumerated(EnumType.STRING)

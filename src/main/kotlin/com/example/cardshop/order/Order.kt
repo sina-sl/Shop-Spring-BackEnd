@@ -21,6 +21,7 @@ data class Order(
 
     val quantity: Int,
 
+    @Enumerated(EnumType.STRING)
     val status: OrderStatus = OrderStatus.JUST_CREATED,
     val createdAt: LocalDateTime = LocalDateTime.now(),
 

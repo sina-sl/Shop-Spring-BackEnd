@@ -17,6 +17,11 @@ class CardService(
     fun getActiveCardById(cardId: Long): Optional<Card> {
         return cardRepository.findByIdAndIsActiveTrue(cardId)
     }
+
+    fun getActiveCardWithAvailableStockById(cardId: Long): Optional<CardWithStockCountDto> {
+        return cardRepository.findByIdAndIsActiveTrueWithAvailableStock(cardId)
+    }
+
     // Customer method to search active cards
     fun searchActiveCards(search: String, pageable: Pageable): Page<CardWithStockCountDto> {
         return cardRepository.searchActiveCardsWithAvailableStock(search,true, pageable)

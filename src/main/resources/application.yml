@@ -34,11 +34,11 @@ payment:
   callback-url: http://localhost:5173/verify-payment
   providers:
     zarinpal:
-      api-url: https://sandbox.zarinpal.com/pg
-      redirect-url: https://www.zarinpal.com/pg/StartPay
+      url: https://sandbox.zarinpal.com/pg
       merchant-id: a1ddfaf1-36ae-43e1-8922-1c0d0fd44392
-      verify-url: ${payment.providers.zarinpal.api-url}/v4/payment/verify.json
-      request-url: ${payment.providers.zarinpal.api-url}/v4/payment/request.json
+      verify-url: ${payment.providers.zarinpal.url}/v4/payment/verify.json
+      request-url: ${payment.providers.zarinpal.url}/v4/payment/request.json
+      payment-url: ${payment.providers.zarinpal.url}/StartPay
 
 server:
   port: 8080 

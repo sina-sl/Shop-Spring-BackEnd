@@ -62,8 +62,8 @@ class AdminController(
 
     @GetMapping("/orders")
     fun searchOrders(
-        @RequestParam(required = false) userId: Long,
-        @RequestParam(defaultValue = "") search: String,
+        @RequestParam(required = false) userId: Long?,
+        @RequestParam(required = false, defaultValue = "") search: String,
         @RequestParam(required = false) status: OrderStatus?,
         @PageableDefault(size = 20, sort = ["createdAt"], direction = Sort.Direction.DESC) pageable: Pageable,
     ): Page<Order> {
