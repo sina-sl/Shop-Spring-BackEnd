@@ -1,4 +1,4 @@
-package com.example.cardshop.card
+package com.example.cardshop.product
 
 enum class PricingType {
     LOCAL,

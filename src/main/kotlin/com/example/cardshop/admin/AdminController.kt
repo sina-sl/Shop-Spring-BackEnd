@@ -1,8 +1,8 @@
 package com.example.cardshop.admin
 
-import com.example.cardshop.card.Card
-import com.example.cardshop.card.dto.CardWithStockCountDto
-import com.example.cardshop.item.CardStockItem
+import com.example.cardshop.product.Product
+import com.example.cardshop.product.dto.ProductWithStockCountDto
+import com.example.cardshop.item.ProductStockItem
 import com.example.cardshop.order.Order
 import com.example.cardshop.order.OrderRepository
 import com.example.cardshop.order.OrderService
@@ -14,6 +14,9 @@ import org.springframework.data.web.PageableDefault
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
+import com.example.cardshop.product.dto.ProductUpdateData
+import com.example.cardshop.product.dto.ProductCreationData
+import com.example.cardshop.item.dto.StockItemsCreationData
 
 @RestController
 @PreAuthorize("hasRole('ADMIN')")
@@ -24,42 +27,49 @@ class AdminController(
     private val orderRepository: OrderRepository
 ) {
 
-    @PostMapping("cards/add")
-    fun addCard(@RequestBody req: CardCreationData): ResponseEntity<Card> {
-        val card = adminService.createCard(req)
-        return ResponseEntity.ok(card)
+    // region Product Management
+    @PostMapping("products/add")
+    fun addProduct(@RequestBody req: ProductCreationData): ResponseEntity<Product> {
+        val product = adminService.createProduct(req)
+        return ResponseEntity.ok(product)
     }
 
-    @PostMapping("cards/{id}")
-    fun getCardById(@PathVariable id: Long): ResponseEntity<Card> {
-        val card = adminService.getCardById(id)
-        return if (card.isPresent) {
-            ResponseEntity.ok(card.get())
+    @PostMapping("products/{id}")
+    fun getProductById(@PathVariable id: Long): ResponseEntity<Product> {
+        val product = adminService.getProductById(id)
+        return if (product.isPresent) {
+            ResponseEntity.ok(product.get())
         } else {
             ResponseEntity.notFound().build()
         }
     }
 
-    @GetMapping("/cards")
-    fun searchCards(
+    @PatchMapping("products/{id}")
+    fun updateProduct(@PathVariable id: Long, @RequestBody req: ProductUpdateData): ResponseEntity<Product> {
+        val product = adminService.updateProduct(id, req)
+        return ResponseEntity.ok(product)
+    }
+
+    @GetMapping("/products")
+    fun searchProducts(
         @RequestParam(required = false) search: String?,
         @RequestParam(required = false) isActive: Boolean?,
         pageable: Pageable
-    ): ResponseEntity<Page<CardWithStockCountDto>> {
-        val cards = adminService.searchCards(search?:"",isActive, pageable)
-        return ResponseEntity.ok(cards)
+    ): ResponseEntity<Page<ProductWithStockCountDto>> {
+        val products = adminService.searchProducts(search ?: "", isActive, pageable)
+        return ResponseEntity.ok(products)
     }
+    // endregion
 
-    
+    // region Stock Management
     @PostMapping("/stocks/add")
-    fun addStockItems(@RequestBody req: StockItemsCreationData): ResponseEntity<List<CardStockItem>> {
+    fun addStockItems(@RequestBody req: StockItemsCreationData): ResponseEntity<List<ProductStockItem>> {
         val stockItems = adminService.addStockItems(req)
         return ResponseEntity.ok(stockItems)
     }
+    // endregion
 
-
-
-
+    // region Order Management
     @GetMapping("/orders")
     fun searchOrders(
         @RequestParam(required = false) userId: Long?,
@@ -83,15 +93,6 @@ class AdminController(
         else
             ResponseEntity.notFound().build()
     }
+    // endregion
 
-//    @PatchMapping("/admin/{id}")
-//    fun updateOrderStatus(@PathVariable id: Long, @RequestBody req: UpdateOrderStatusRequest): ResponseEntity<Order> {
-//        val orderOpt = orderService.getOrderById(id)
-//        if (orderOpt.isEmpty) return ResponseEntity.notFound().build()
-//        val order = orderOpt.get()
-//        // order.status = req.status
-////        orderRepository.save(order)
-//        // do in service
-//        return ResponseEntity.ok(order)
-//    }
 }

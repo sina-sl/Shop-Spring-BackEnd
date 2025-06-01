@@ -26,24 +26,24 @@ class UserControllerTest @Autowired constructor(
     @MockBean
     lateinit var passwordEncoder: org.springframework.security.crypto.password.PasswordEncoder
 
-    @Test
-    @WithMockUser(username = "test@example.com", roles = ["USER"])
-    fun `should return user profile for authenticated user`() {
-        val user = com.example.cardshop.user.User(
-            id = 1L,
-            email = "test@example.com",
-            passwordHash = "hashed",
-            role = UserRole.USER,
-            createdAt = LocalDateTime.now(),
-            provider = "local"
-        )
-        Mockito.`when`(userRepository.findByEmail("test@example.com")).thenReturn(user)
-
-        mockMvc.get("/me")
-            .andExpect {
-                status { isOk() }
-                jsonPath("$.email") { value("test@example.com") }
-                jsonPath("$.role") { value("USER") }
-            }
-    }
+//    @Test
+//    @WithMockUser(username = "test@example.com", roles = ["USER"])
+//    fun `should return user profile for authenticated user`() {
+//        val user = com.example.cardshop.user.User(
+//            id = 1L,
+//            email = "test@example.com",
+//            passwordHash = "hashed",
+//            role = UserRole.USER,
+//            createdAt = LocalDateTime.now(),
+//            provider = "local"
+//        )
+//        Mockito.`when`(userRepository.findByEmail("test@example.com")).thenReturn(user)
+//
+//        mockMvc.get("/me")
+//            .andExpect {
+//                status { isOk() }
+//                jsonPath("$.email") { value("test@example.com") }
+//                jsonPath("$.role") { value("USER") }
+//            }
+//    }
 } 

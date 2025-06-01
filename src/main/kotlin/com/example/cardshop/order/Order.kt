@@ -1,7 +1,7 @@
 package com.example.cardshop.order
 
-import com.example.cardshop.card.Card
-import com.example.cardshop.item.CardStockItem
+import com.example.cardshop.product.Product
+import com.example.cardshop.item.ProductStockItem
 import com.example.cardshop.payment.Payment
 import com.example.cardshop.user.User
 import com.fasterxml.jackson.annotation.JsonIgnore
@@ -27,7 +27,7 @@ data class Order(
 
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
     @JsonIgnore
-    val cardStockItems: List<CardStockItem> = emptyList(),
+    val productStockItems: List<ProductStockItem> = emptyList(),
 
     val preparationNote: String? = null,
     val deliveryDate: LocalDateTime? = null,
@@ -36,13 +36,12 @@ data class Order(
     val payments: List<Payment> = emptyList(),
     val purchaseDate: LocalDateTime? = null,
 
-
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "card_id", nullable = false)
-    val card: Card,
+    @JoinColumn(name = "product_id", nullable = false)
+    val product: Product,
 
 ) {
     @get:Transient
     val totalPrice: Int
-        get() = card.price * quantity
+        get() = product.price * quantity
 }
